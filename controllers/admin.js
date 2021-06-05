@@ -10,7 +10,7 @@ exports.postposts= async (req, res, next)=>{
     const username = req.body.username;
     const userdoc = await User.findOne({username: username});
     const userId = userdoc._id;  
- 
+
     const newBlog = new Blog({
         title:title,
         text:text,

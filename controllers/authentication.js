@@ -38,13 +38,13 @@ exports.postsignup = async (req,res,next)=>{
                         error:err
                     })
                 });
-    
 }
+
 
 exports.postlogin= async (req, res , next)=>{
     const username = req.body.username;
     const password = req.body.password;
-
+    // console.log(req.body);
     const findUser = await User.findOne({username: username});
     if(!findUser)
     return res.status(401).json({error: 'username not found'});
