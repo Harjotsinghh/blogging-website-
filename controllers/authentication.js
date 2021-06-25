@@ -3,6 +3,7 @@ const User = require('../models/users');
 const bcrypt= require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const Rtoken = require('../models/token');
+const cookie = require('cookie');
 
 exports.postsignup = async (req,res,next)=>{
     const email = req.body.email;
@@ -59,8 +60,12 @@ exports.postlogin= async (req, res , next)=>{
     const refreshToken = await jwt.sign({message:'I am refresh token'},'aja_mexico_chaliae',{expiresIn:'31d'});
     const newrtoken = new Rtoken({refreshToken: refreshToken});
     const saved_token = await newrtoken.save();
+    res.setHeader('Set-Cookie', cookie.serialize('refresh-token',`${refreshToken}`, {
+            httpOnly:true,
+            maxAge : 14* 24 *60 *60 
+    }));
 
-    
-     res.status(200).json({token: token,refreshtoken:refreshToken, message:"successfully logged in "});
+     res.status(200)
+     .json({token: token, message:"successfully logged in "});
 
 }
