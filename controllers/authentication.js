@@ -10,6 +10,7 @@ exports.postsignup = async (req,res,next)=>{
     const password = req.body.password;
     const confirmpassword = req.body.confirmpassword;
     const name= req.body.name;
+    console.log(req.body);
         const finduser = await User.findOne({email: email});
         if(finduser)
         return res.status(400).json({ error: 'email already exist'});
@@ -35,7 +36,7 @@ exports.postsignup = async (req,res,next)=>{
                     })
                 })
                 .catch(err=>{
-                    res.status(401).json({
+                    res.status(400).json({
                         error:err
                     })
                 });
