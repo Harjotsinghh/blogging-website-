@@ -15,11 +15,12 @@ const mongoDbUri= 'mongodb+srv://harjot:JD4CN2vk6ZAYXsK@cluster0.vuvyc.mongodb.n
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
-app.use(cookieParser);
+app.use(cookieParser());
 
 //cors
 app.use((req,res,next)=>{
-    res.setHeader('Access-Control-Allow-Origin','*');
+    res.setHeader('Access-Control-Allow-Origin',req.header('origin'));
+    res.setHeader('Access-Control-Allow-Credentials',true);
     res.setHeader('Access-Control-Allow-Methods','GET','POST','PUT','DELETE');
     res.setHeader('Access-Control-Allow-Headers','Content-Type,Authorization');
     next();

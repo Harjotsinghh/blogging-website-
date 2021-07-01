@@ -11,7 +11,7 @@ exports.postsignup = async (req,res,next)=>{
     const password = req.body.password;
     const confirmpassword = req.body.confirmpassword;
     const name= req.body.name;
-    console.log(req.body);
+    // console.log(req.body);
         const finduser = await User.findOne({email: email});
         if(finduser)
         return res.status(400).json({ error: 'email already exist'});
@@ -50,22 +50,28 @@ exports.postlogin= async (req, res , next)=>{
     // console.log(req.body);
     const findUser = await User.findOne({username: username});
     if(!findUser)
-    return res.status(401).json({error: 'username not found'});
+    return res.status(401).json({error: 'Please check your username or password'});
 
     const passwordcheck = await bcrypt.compare(password, findUser.password);
     if(!passwordcheck)
-    return res.status(401).json({error:'password didn\'t match'});
+    return res.status(401).json({error:'Please check your username or password'});
 
     const token = await jwt.sign({username:username},'aja_mexico_chaliae',{expiresIn : '2h'});
-    const refreshToken = await jwt.sign({message:'I am refresh token'},'aja_mexico_chaliae',{expiresIn:'31d'});
-    const newrtoken = new Rtoken({refreshToken: refreshToken});
+    const refreshToken = await jwt.sign({username:username},'aja_mexico_chaliae',{expiresIn:'31d'});
+    const newrtoken = new Rtoken({refreshtoken: refreshToken});
     const saved_token = await newrtoken.save();
-    res.setHeader('Set-Cookie', cookie.serialize('refresh-token',`${refreshToken}`, {
-            httpOnly:true,
-            maxAge : 14* 24 *60 *60 
-    }));
+    res.setHeader('Set-Cookie', cookie.serialize('rtoken',`${refreshToken}`, {
+            expires: new Date(Date.now() + 60*24*60*60*1000),
+            sameSite:'none',
+            secure:true,
+            httpOnly:true
+    }))
+    
+    res.status(200)
+        .json({token: token, message:"successfully logged in "});
 
-     res.status(200)
-     .json({token: token, message:"successfully logged in "});
-
+}
+exports.gettoken = async ( req, res, next)=>{
+    console.log(req.cookies);
+    res.json('success');
 }

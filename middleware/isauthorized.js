@@ -12,7 +12,7 @@ module.exports =async (req, res, next)=>{
     if(!verified)
     return res.status(401).json({error: 'not authenticated'});
 
-    req.body.username= verified.username;
+    req.body.username = verified.username;
     next();
     
 }
