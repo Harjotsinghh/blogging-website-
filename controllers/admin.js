@@ -30,14 +30,13 @@ exports.postposts= async (req, res, next)=>{
      const username  = req.body.username;
     //  console.log(username);
     const userdoc = await (await User.findOne({username:username}))._id;
-    const posts = await Blog.find({userId: userdoc});
+    const posts = await Blog.find({userId: userdoc}).populate('userId','username');
     // console.log(userdoc);
     res.status(200).json({posts:posts});
 
  }
 
  exports.deletepost = async (req, res, next)=>{ 
-
     const id = req.params.id;
     try{
     
