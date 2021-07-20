@@ -4,6 +4,7 @@ const Blog = require('../models/blogs');
 
 
 exports.postposts= async (req, res, next)=>{
+    console.log(req.body)
     const title = req.body.title;
     const text = req.body.text;
     const imageUrl= req.body.imgUrl;

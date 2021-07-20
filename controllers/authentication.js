@@ -72,14 +72,16 @@ exports.postlogin= async (req, res , next)=>{
 
 }
 exports.gettoken = async ( req, res, next)=>{
+
     if(!req.cookies.rtoken)
-    res.status(401).json({error: 'not authorized'});
+    return res.status(401).json({error: 'not authorized'});
+
     const token = req.cookies.rtoken;
     const verified =  await jwt.verify(token,'aja_mexico_chaliae');
     if(!verified)
     res.status(401).json({error:'not authorized'});
 
-    const accesstoken= await jwt.sign({username:verified.username},'aja_mexico_chaliae',{expiresIn : '2h'});
+    const accesstoken= await jwt.sign({username:verified.username},'aja_mexico_chaliae',{expiresIn : '1d'});
     
     res.status(200).json({token:accesstoken});
 }

@@ -5,6 +5,6 @@ const isAuthenticated = require('../middleware/isauthorized');
 
 router.post('/add-post',isAuthenticated,adminController.postposts);
 router.get('/posts',isAuthenticated,adminController.getposts);
-router.delete('/delete-post/:id',isAuthenticated,adminController.deletepost);
+router.post('/delete-post/:id',isAuthenticated,adminController.deletepost);
 
 module.exports = router;

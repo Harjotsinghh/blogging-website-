@@ -15,12 +15,9 @@ const adminroutes = require('./routes/admin');
 const mongoDbUri= `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@cluster0.vuvyc.mongodb.net/myblogs?retryWrites=true&w=majority`;
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended:false}));
 app.use(cookieParser());
-
 //cors
 app.use((req,res,next)=>{
-    
     res.setHeader('Access-Control-Allow-Origin',req.header('origin'));
     res.setHeader('Access-Control-Allow-Credentials',true);
     res.setHeader('Access-Control-Allow-Methods','GET','POST','PUT','DELETE');
