@@ -19,10 +19,7 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 //cors
 app.use((req,res,next)=>{
-    if(req.headers.credentials)
     res.setHeader('Access-Control-Allow-Origin',req.header('origin'));
-    else
-    res.setHeader('Access-Control-Allow-Origin','*');
     res.setHeader('Access-Control-Allow-Credentials',true);
     res.setHeader('Access-Control-Allow-Methods','GET','POST','PUT','DELETE');
     res.setHeader('Access-Control-Allow-Headers','Content-Type,Authorization');
