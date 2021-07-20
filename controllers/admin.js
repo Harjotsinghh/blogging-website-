@@ -19,10 +19,10 @@ exports.postposts= async (req, res, next)=>{
         userId:userId
     });
     newBlog.save().then(result=>{
-        res.status(201).json({blog: result, msg:'post saved successfully'});
+       return  res.status(201).json({blog: result, msg:'post saved successfully'});
     })
     .catch(err=>{
-        res.status(500).json({err:err});
+        return res.status(500).json({err:err});
     })
     
  
