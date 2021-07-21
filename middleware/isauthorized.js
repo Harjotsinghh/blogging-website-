@@ -14,8 +14,9 @@ module.exports =async (req, res, next)=>{
     catch(err){
         try{
             const rtoken = req.cookies.rtoken
-            const verifyRtoken = await jwt.sign.verify(rtoken,'aja_mexico_chaliae')
-            req.body.username= verified.username
+            const verifyRtoken = await jwt.verify(rtoken,'aja_mexico_chaliae')
+            req.body.username= verifyRtoken.username
+            res.body.token = await jwt.sign({username: username},'aja_mexico_chaliae',{expiresIn : '1d'} )
             next()
         }
         catch(err){

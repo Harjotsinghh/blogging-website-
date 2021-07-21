@@ -93,7 +93,12 @@ exports.getsignout = async (req, res, next) => {
         {
             await Rtoken.deleteOne({refreshtoken : token});
         }
-        res.clearCookie("rtoken");
+        res.setHeader('Set-Cookie', cookie.serialize('rtoken',`${token}`, {
+            expires: Date.now(),
+            sameSite:'none',
+            secure:true,
+            httpOnly:true
+       }))
     }
     catch(err){
         console.log(err);
