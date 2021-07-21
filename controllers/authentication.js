@@ -85,3 +85,20 @@ exports.gettoken = async ( req, res, next)=>{
     
     res.status(200).json({token:accesstoken});
 }
+
+exports.getsignout = async (req, res, next) => {
+    try{
+        const token = req.cookies.rtoken;
+        if(token)
+        {
+            await Rtoken.deleteOne({refreshtoken : token});
+        }
+        res.clearCookie("rtoken");
+    }
+    catch(err){
+        console.log(err);
+    }
+
+   
+    res.status(200).json({msg: 'successfully loggedout'});
+}

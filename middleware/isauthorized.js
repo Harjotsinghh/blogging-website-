@@ -12,10 +12,20 @@ module.exports =async (req, res, next)=>{
       req.body.username = verified.username
     }   
     catch(err){
-        return res.status(401).json({err: 'not autorized'})
+        try{
+            const rtoken = req.cookies.rtoken
+            const verifyRtoken = await jwt.sign.verify(rtoken,'aja_mexico_chaliae')
+            req.body.username= verified.username
+            next()
+        }
+        catch(err){
+            return res.status(401).json({err: 'not autorized'})
+        }
+       
     }
    
   
     next();
     
 }
+
