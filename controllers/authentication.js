@@ -72,33 +72,35 @@ exports.postlogin= async (req, res , next)=>{
 
 }
 exports.gettoken = async ( req, res, next)=>{
-
+    console.log(req.cookies)
     if(!req.cookies.rtoken)
     return res.status(401).json({error: 'not authorized'});
-
     const token = req.cookies.rtoken;
-    const verified =  await jwt.verify(token,'aja_mexico_chaliae');
-    if(!verified)
-    res.status(401).json({error:'not authorized'});
-
-    const accesstoken= await jwt.sign({username:verified.username},'aja_mexico_chaliae',{expiresIn : '1d'});
-    
-    res.status(200).json({token:accesstoken});
+    try{
+        const verified =  await jwt.verify(token,'aja_mexico_chaliae');
+        const accesstoken= await jwt.sign({username:verified.username},'aja_mexico_chaliae',{expiresIn : '1d'});
+       return res.status(200).json({token:accesstoken});
+    }
+    catch(e){
+        return res.status(401).json({error: e})
+    }
+  
 }
 
 exports.getsignout = async (req, res, next) => {
     try{
+        console.log(req.cookies)
         const token = req.cookies.rtoken;
         if(token)
         {
             await Rtoken.deleteOne({refreshtoken : token});
         }
-        res.setHeader('Set-Cookie', cookie.serialize('rtoken',`${token}`, {
-            expires: Date.now(),
+        res.setHeader('Set-Cookie', cookie.serialize('rtoken',"devlaidate", {
+            expire : Date.now(),
             sameSite:'none',
             secure:true,
             httpOnly:true
-       }))
+    }))
     }
     catch(err){
         console.log(err);
